@@ -1,14 +1,21 @@
 # hejunjie/error-log
 
-不同框架通常自带日志系统，但要么强绑定到框架，更换框架就要重构日志方案，要么像 Monolog 这类强大的日志系统功能过于庞大。而为了在不同框架中保持通用性，同时避免过度复杂，我基于责任链模式实现了一个轻量级的日志模块
+<div align="center">
+  <a href="./README.md">English</a>｜<a href="./README.zh-CN.md">简体中文</a>
+  <hr width="50%"/>
+</div>
 
-## 安装方式
+An error logging component using the Chain of Responsibility pattern. Supports multiple output channels like local files, remote APIs, and console logs—ideal for flexible and scalable logging strategies.
+
+## Installation
+
+Install via Composer:
 
 ```bash
 composer require hejunjie/error-log
 ```
 
-## 使用方式
+## Usage
 
 ```php
 <?php
@@ -17,66 +24,61 @@ use Hejunjie\ErrorLog\Logger;
 use Hejunjie\ErrorLog\Handlers;
 
 $log = new Logger([
-    new Handlers\ConsoleHandler(),                // 打印到控制台
-    new Handlers\FileHandler('日志存储文件夹路径'),  // 存储到文件
-    new Handlers\RemoteApiHandler('请求url')       // 发送到某个地址
+    new Handlers\ConsoleHandler(),                // Print to console
+    new Handlers\FileHandler('path'),  // Save to file
+    new Handlers\RemoteApiHandler('url')       // Send to a specific address
 ]);
 
-$log->info('标题','内容',['上下文']);     // INFO 级
-$log->warning('标题','内容',['上下文']);  // WARNING 级
-$log->error('标题','内容',['上下文']);    // ERROR 级
+$log->info('title','content',['Context']);     // INFO Level
+$log->warning('title','content',['Context']);  // WARNING Level
+$log->error('title','content',['Context']);    // ERROR Level
 
-$log->log('自定义级别','标题','内容',['上下文']);
+$log->log('level','title','content',['Context']);
 ```
 
-## 用途 & 初衷
+## Purpose & Original Intent
 
-这个组件的起因其实很简单：
-代码跑在不同的服务器上，有的安静得像退休老头，有的动不动炸成烟花——但它们都在跑“同一份代码”，每次炸了还都来找我。
+The origin of this component is actually quite simple:
+The code runs on different servers, some are as quiet as retired old men, while others explode into fireworks at the slightest provocation — but they're all running "the same code," and every time something breaks, they come looking for me.
 
-最离谱的是，每个人都说是“最新版”，但到底是代码问题、环境问题、部署问题，谁知道？
-于是我写了这个小东西：让日志可以灵活地 输出到文件、控制台、远程服务器，最好还能自定义格式，让我在被质问之前，先找到锅。
+The most absurd part is that everyone claims they’re running the "latest version," but whether it's a code issue, an environment issue, or a deployment issue, who knows?
+So, I wrote this little tool: to flexibly output logs to files, consoles, and remote servers, with customizable formats. This way, I can find the problem before I'm questioned.
 
-后来还写了个日志接收小脚本，配合这个组件可以把远程日志直接展示出来，用来接收、展示、筛选、管理日志错误信息：
+Later, I also wrote a small log receiving script. Combined with this component, it can directly display remote logs, allowing me to receive, display, filter, and manage log error information.
 
 👉 [oh-shit-logger](https://github.com/zxc7563598/oh-shit-logger)
 
-## 🔧 更多工具包（可独立使用，也可统一安装）
+## 🔧 Additional Toolkits (Can be used independently or installed together)
 
-本项目最初是从 [hejunjie/tools](https://github.com/zxc7563598/php-tools) 拆分而来，如果你想一次性安装所有功能组件，也可以使用统一包：
+This project was originally extracted from [hejunjie/tools](https://github.com/zxc7563598/php-tools).
+To install all features in one go, feel free to use the all-in-one package:
 
 ```bash
 composer require hejunjie/tools
 ```
 
-当然你也可以按需选择安装以下功能模块：
+Alternatively, feel free to install only the modules you need：
 
-[hejunjie/cache](https://github.com/zxc7563598/php-cache) - 多层缓存系统，基于装饰器模式。
+[hejunjie/utils](https://github.com/zxc7563598/php-utils) - A lightweight and practical PHP utility library that offers a collection of commonly used helper functions for files, strings, arrays, and HTTP requests—designed to streamline development and support everyday PHP projects.
 
-[hejunjie/china-division](https://github.com/zxc7563598/php-china-division) - 中国省市区划分数据包。
+[hejunjie/cache](https://github.com/zxc7563598/php-cache) - A layered caching system built with the decorator pattern. Supports combining memory, file, local, and remote caches to improve hit rates and simplify cache logic.
 
-[hejunjie/mobile-locator](https://github.com/zxc7563598/php-mobile-locator) - 国内手机号归属地 & 运营商识别。
+[hejunjie/china-division](https://github.com/zxc7563598/php-china-division) - Regularly updated dataset of China's administrative divisions with ID-card address parsing. Distributed via Composer and versioned for use in forms, validation, and address-related features
 
-[hejunjie/utils](https://github.com/zxc7563598/php-utils) - 常用工具方法集合。
+[hejunjie/error-log](https://github.com/zxc7563598/php-error-log) - An error logging component using the Chain of Responsibility pattern. Supports multiple output channels like local files, remote APIs, and console logs—ideal for flexible and scalable logging strategies.
 
-[hejunjie/address-parser](https://github.com/zxc7563598/php-address-parser) - 收货地址智能解析工具，支持从非结构化文本中提取用户/地址信息。
+[hejunjie/mobile-locator](https://github.com/zxc7563598/php-mobile-locator) - A mobile number lookup library based on Chinese carrier rules. Identifies carriers and regions, suitable for registration checks, user profiling, and data archiving.
 
-[hejunjie/url-signer](https://github.com/zxc7563598/php-url-signer) - URL 签名工具，支持对 URL 进行签名和验证。
+[hejunjie/address-parser](https://github.com/zxc7563598/php-address-parser) - An intelligent address parser that extracts name, phone number, ID number, region, and detailed address from unstructured text—perfect for e-commerce, logistics, and CRM systems.
 
-[hejunjie/google-authenticator](https://github.com/zxc7563598/php-google-authenticator) - Google Authenticator 及类似应用的密钥生成、二维码创建和 OTP 验证。
+[hejunjie/url-signer](https://github.com/zxc7563598/php-url-signer) - A PHP library for generating URLs with encryption and signature protection—useful for secure resource access and tamper-proof links.
 
-[hejunjie/simple-rule-engine](https://github.com/zxc7563598/php-simple-rule-engine) - 一个轻量、易用的 PHP 规则引擎，支持多条件组合、动态规则执行。
+[hejunjie/google-authenticator](https://github.com/zxc7563598/php-google-authenticator) - A PHP library for generating and verifying Time-Based One-Time Passwords (TOTP). Compatible with Google Authenticator and similar apps, with features like secret generation, QR code creation, and OTP verification.
 
-👀 所有包都遵循「轻量实用、解放双手」的原则，能单独用，也能组合用，自由度高，欢迎 star 🌟 或提 issue。
+[hejunjie/simple-rule-engine](https://github.com/zxc7563598/php-simple-rule-engine) - A lightweight and flexible PHP rule engine supporting complex conditions and dynamic rule execution—ideal for business logic evaluation and data validation.
+
+👀 All packages follow the principles of being lightweight and practical — designed to save you time and effort. They can be used individually or combined flexibly. Feel free to ⭐ star the project or open an issue anytime!
 
 ---
 
-该库后续将持续更新，添加更多实用功能。欢迎大家提供建议和反馈，我会根据大家的意见实现新的功能，共同提升开发效率。
-
-
-
-
-
-
-
-
+This library will continue to be updated with more practical features. Suggestions and feedback are always welcome — I’ll prioritize new functionality based on community input to help improve development efficiency together.

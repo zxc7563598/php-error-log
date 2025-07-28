@@ -22,6 +22,6 @@ class DefaultFormatter implements LogFormatterInterface
      */
     public function format(string $level, string $message, array $context = []): string
     {
-        return sprintf("[%s] %s: %s %s\n", date('Y-m-d H:i:s'), $level, $message, json_encode($context));
+        return sprintf("[%s] %s: %s %s\n", date('Y-m-d H:i:s'), $level, $message, json_encode($context, JSON_UNESCAPED_UNICODE + JSON_UNESCAPED_SLASHES + JSON_PRESERVE_ZERO_FRACTION));
     }
 }
